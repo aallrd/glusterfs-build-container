@@ -1,0 +1,5 @@
+Dockerfile.amd64
+Dockerfile.arm32v7
+qemu-*
+x86_64_qemu-*
+*.swp

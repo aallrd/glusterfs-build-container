@@ -1,0 +1,20 @@
+sudo: required
+language: bash
+services:
+  - docker
+notifications:
+  email: false
+env:
+  global:
+  - secure: Pv16OuQuYnQWIme4UlPfroq+EROSdgzO6Q+XBMzD9tnhy/DO5hftvbTA/flqX1spj7/0aMcdevL9XwNA/XNIQSlNGmvyN44ImBUjcyGDecfmCYICwVm8KfYPk5CVhUCayMpUcYMOY3rj/UF1/NtgbT8Azhg8gii+OQZoUda0XEp9gfvbQuK5lSzV296zu1h0j0xnHsgJuXAk/mwDc2sW8c0tQM9ail/GkSUthcled1IUbk0Lz6OMRR+W7pRAgTqM5tPYXsnI3HOeFhKKKJxuz5QFFccmoLE5rsJ13HPJtEWxRpKxaoF9rFJ5Z2RgnPIqzKJtXsEuyTAcMRL6iku9cexx53WahFXSic1mVoo8MoBKWyxBTdEYM8MJmta0U7kA8BIwOoa0VoyLgr8ainyQCQaF8YW5l5YguXDGLEqLV0kTrGROJOMwO0xubklJooGQy3vuc5J113HMZyGbcn2pCr78nrE+t1+yZfn+Ej+FZi+JXfE/Y11rwbms0gp7p3zF8jjBjSomlpmVA2e36QjJ9lqAbJi9iHnhNvkU8ButZBF2Z4VLGLFN24PHFibRg5SCbV1v6bQe/vs8DPykiqscsXLGllFvWcU7w0gk2Vmfl/UhA1xZ05/L0qIIMVqQHtCuF6Lx0gInaiPPWm8Je4Tz4k2JvFhhU6d0HmoVQ8BTPLY=
+  - secure: D8NrVxywCA5lKDgr/Mnjkb/ByvFggLXPvIXR7tWXuBLUImVjScEuirfrIBs0HZOsob0khL2MaLwKPvbdeifwLCjNV4HurkhHNFH69EpaMI1rxUNtVwDbtSuzd4rOLuYzOGBMTTNpYKCV0Q8LzODUzPr1i94XCApxl8JIsGCgGJtqlPIWjdBWiWnEPt4YvbU26kir9Oy38/8AFyO6f0OfkwKxqbLmkilJ48iHdpj3vlhXEVz/2B5E/+rAv/xjlL1O8ZOubvFxBqh63L2DJta5DSz0dWOj1w/mNztBZrBo8qlGpgok6wuqaoX7FmEyj3Ss/hXDTUmOCE16NJt2p5/y2y3qyamoaT8/Jn5TUwEp8r9DnhOrmLP21M0LjdqiSQAuPRa60gaiN+uUjeeCDph21gXy25jA+3S+mgv/BCkrOHmuy1qLacveAnNGGTKbOTKGvAUY4bjj8186w3TbFd4TzNqxYemQlqGdGjWw6ULmaD0etio9EjFMDt50fIkNzc3vg3uY8rB0yMOQZNdZnoDkdrVDv19tNf7bJZmqBmCH+RYRtSKsMOXTQ7EVSEvMNmuLIc/zuhsOhOD1U1Yo6pi1srXSkgS7JHxkoF2lv8ReNSYF3B75yAyvx4B/5eJAYYriLg7SyZTsmyWOiaQmVBC9SUfWijIN4bSpdoq7OqbOvRo=
+script:
+  - sudo apt-get update -y && sudo apt-get install --only-upgrade -y docker-ce && docker info
+  - sudo apt-get install -y jq
+  - ls -ltra $HOME
+  - ls -ltra $HOME/.docker
+  - mkdir -p $HOME/.docker && touch $HOME/.docker/config.json
+  - echo '{ \"experimental\" : \"enabled\" }' > $HOME/.docker/config.json
+  - cat /$HOME/.docker/config.json | jq
+  - docker manifest --help
+  - ./build.sh --only-amd64
