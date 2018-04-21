@@ -95,4 +95,4 @@ function __parse_args() {
   return 0
 }
 
-__main "${@}"
+__main "${@:-}"
