@@ -47,15 +47,6 @@ function __main() {
       amd64   ) qemu_arch="x86_64" ;;
       arm32v7 ) qemu_arch="arm" ;;
     esac
-    echo "Configuring Dockerfile (${docker_arch}) with qemu (${qemu_arch})"
-    cp Dockerfile.cross Dockerfile.${docker_arch}
-    sed -i "s|__BASEIMAGE_ARCH__|${docker_arch}|g" Dockerfile.${docker_arch}
-    sed -i "s|__QEMU_ARCH__|${qemu_arch}|g" Dockerfile.${docker_arch}
-    if [ ${docker_arch} == 'amd64' ]; then
-      sed -i "/__CROSS_/d" Dockerfile.${docker_arch}
-    else
-      sed -i "s/__CROSS_//g" Dockerfile.${docker_arch}
-    fi
     echo "Building Dockerfile.${docker_arch}"
     docker build -f Dockerfile.${docker_arch} -t ${__docker_tag}:${docker_arch}-latest .
     echo "Pushing image ${__docker_tag}:${docker_arch}-latest"

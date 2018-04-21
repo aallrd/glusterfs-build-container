@@ -1,6 +1,4 @@
-FROM __BASEIMAGE_ARCH__/centos:7
-
-__CROSS_COPY qemu-__QEMU_ARCH__-static /usr/bin/
+FROM amd64/centos:7
 
 RUN yum update -y \
     && yum install -y git make rpm-build mock \

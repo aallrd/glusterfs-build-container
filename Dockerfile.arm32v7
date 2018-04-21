@@ -1,0 +1,9 @@
+FROM arm32v7/centos:7
+
+COPY qemu-arm-static /usr/bin/
+
+RUN yum update -y \
+    && yum install -y git make rpm-build mock \
+    && yum install -y automake autoconf libtool flex bison openssl-devel libxml2-devel python-devel libaio-devel libibverbs-devel librdmacm-devel readline-devel lvm2-devel glib2-devel libcmocka-devel libacl-devel sqlite-devel fuse-devel redhat-rpm-config firewalld userspace-rcu-devel \
+    && yum clean all \
+    && rm -rf /var/cache/yum
