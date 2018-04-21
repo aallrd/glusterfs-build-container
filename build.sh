@@ -68,7 +68,7 @@ function __main() {
     fi
     docker manifest create aallrd/glusterfs-build-container:latest aallrd/glusterfs-build-container:amd64-latest aallrd/glusterfs-build-container:arm32v7-latest || true
     docker manifest annotate aallrd/glusterfs-build-container:latest aallrd/glusterfs-build-container:arm32v7-latest --os linux --arch arm || true
-    docker manifest aallrd/glusterfs-build-container:latest || true
+    docker manifest push aallrd/glusterfs-build-container:latest || true
     if [[ -e "${HOME}/.docker/config.json.original" ]] ; then
         mv "${HOME}/.docker/config.json.original" "${HOME}/.docker/config.json"
     elif [[ -e "${HOME}/.docker/config.json.rm" ]] ; then
