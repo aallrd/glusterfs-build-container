@@ -11,10 +11,4 @@ env:
 script:
   - sudo apt-get update -y && sudo apt-get install --only-upgrade -y docker-ce && docker info
   - sudo apt-get install -y jq
-  - ls -ltra $HOME
-  - ls -ltra $HOME/.docker
-  - mkdir -p $HOME/.docker && touch $HOME/.docker/config.json
-  - echo '{ \"experimental\" : \"enabled\" }' > $HOME/.docker/config.json
-  - cat /$HOME/.docker/config.json | jq
-  - docker manifest --help
   - ./build.sh --only-amd64
