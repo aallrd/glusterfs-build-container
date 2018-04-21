@@ -64,9 +64,23 @@ function __main() {
 
   # Creating the manifest
   if [[ $(docker version | grep Version: | tail -n1 | awk '{print $2}' | awk -F'.' '{print $1}') -ge 18 ]] ; then
-    docker manifest create aallrd/glusterfs-build-container:latest aallrd/glusterfs-build-container:amd64-latest aallrd/glusterfs-build-container:arm32v7-latest
-    docker manifest annotate aallrd/glusterfs-build-container:latest aallrd/glusterfs-build-container:arm32v7-latest --os linux --arch arm
-    docker manifest aallrd/glusterfs-build-container:latest
+    # Need to enable experimental mode to access the manifest command
+    if [[ -e "${HOME}/.docker/config.json" ]] ; then
+        cp "${HOME}/.docker/config.json" "${HOME}/.docker/config.json.original"
+        jq '. += { "experimental" : "enabled" }' < "${HOME}/.docker/config.json" > "${HOME}/.docker/config.json.new"
+        mv "${HOME}/.docker/config.json.new" "${HOME}/.docker/config.json"
+    else
+        echo '{ "experimental" : "enabled" }' > "${HOME}/.docker/config.json"
+        touch "${HOME}/.docker/config.json.rm"
+    fi
+    docker manifest create aallrd/glusterfs-build-container:latest aallrd/glusterfs-build-container:amd64-latest aallrd/glusterfs-build-container:arm32v7-latest || true
+    docker manifest annotate aallrd/glusterfs-build-container:latest aallrd/glusterfs-build-container:arm32v7-latest --os linux --arch arm || true
+    docker manifest aallrd/glusterfs-build-container:latest || true
+    if [[ -e "${HOME}/.docker/config.json.original" ]] ; then
+        mv "${HOME}/.docker/config.json.original" "${HOME}/.docker/config.json"
+    elif [[ -e "${HOME}/.docker/config.json.rm" ]] ; then
+        rm "${HOME}/.docker/config.json" "${HOME}/.docker/config.json.rm"
+    fi
   else
     echo "The docker manifest command was introduced in the release 18.02."
   fi
