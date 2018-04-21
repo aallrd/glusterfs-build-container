@@ -1,5 +1,7 @@
 # glusterfs-build-container
 
+[![Build Status](https://travis-ci.org/aallrd/glusterfs-build-container.svg?branch=master)](https://travis-ci.org/aallrd/glusterfs-build-container)
+
     $ ./build.sh -h
     build.sh:
     -h|--help    : Print the helper.
