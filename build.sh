@@ -23,6 +23,14 @@ function __main() {
   # Parsing input parameters
   __parse_args "${@}"
 
+  # Login on docker hub
+  if [[ ${DOCKER_USERNAME:-} == "" || ${DOCKER_PASSWORD:-} == "" ]] ; then
+    echo "DOCKER_USERNAME and/or DOCKER_PASSWORD are not set in this shell, cannot login on the Docker Hub."
+    return 1
+  else
+    echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
+  fi
+
   # Registering handlers
   docker run --rm --privileged multiarch/qemu-user-static:register || true
 
@@ -33,14 +41,6 @@ function __main() {
     tar -xzf "x86_64_qemu-${target_arch}-static.tar.gz"
   done
 
-  # Login on docker hub
-  if [[ ${DOCKER_USERNAME:-} == "" || ${DOCKER_PASSWORD:-} == "" ]] ; then
-    echo "DOCKER_USERNAME and/or DOCKER_PASSWORD are not set in this shell, cannot login on the Docker Hub."
-    return 1
-  else
-    echo "${DOCKER_PASSWORD}" | docker login -u "${DOCKER_USERNAME}" --password-stdin
-  fi
-  
   # Building the docker images
   for docker_arch in ${__docker_archs[@]}; do
     case ${docker_arch} in
