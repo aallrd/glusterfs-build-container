@@ -32,7 +32,9 @@ function __main() {
   fi
 
   # Registering handlers
-  docker run --rm --privileged multiarch/qemu-user-static:register || true
+  if [[ "$(uname -m)" == "x86_64" ]] ; then
+    docker run --rm --privileged multiarch/qemu-user-static:register || true
+  fi
 
   # Getting handlers
   for target_arch in ${__target_archs[@]}; do
